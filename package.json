@@ -36,7 +36,7 @@
     "chai-as-promised": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-typescript": "^3.2.4",
+    "gulp-typescript": "^5.0.1",
     "mocha": "^4.1.0",
     "mocha-typescript": "^1.1.12",
     "node-webcrypto-ossl": "^1.0.35",
