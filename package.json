@@ -47,6 +47,6 @@
     "uglifyjs-webpack-plugin": "^1.2.0",
     "webcrypto-core": "0.1.16",
     "webpack": "^3.11.0",
-    "webpack-stream": "^4.0.1"
+    "webpack-stream": "^5.2.1"
   }
 }
