@@ -34,7 +34,7 @@
     "async-file": "^2.0.2",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.0",
     "mocha": "^6.2.0",
