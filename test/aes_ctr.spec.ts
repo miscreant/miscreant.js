@@ -1,17 +1,14 @@
-// Copyright (C) 2016 Dmitry Chestnykh
+// Copyright (C) 2016-2019 Dmitry Chestnykh, Tony Arcieri
 // MIT License. See LICENSE file for details.
 
 import { suite, test } from "mocha-typescript";
 import { expect } from "chai";
 import { AesCtrExample } from "./support/test_vectors";
 
-import WebCrypto = require("node-webcrypto-ossl");
+import SoftAes from "../src/providers/soft/aes";
+import SoftAesCtr from "../src/providers/soft/aes_ctr";
 
-import PolyfillAes from "../src/providers/polyfill/aes";
-import PolyfillAesCtr from "../src/providers/polyfill/aes_ctr";
-import WebCryptoAesCtr from "../src/providers/webcrypto/aes_ctr";
-
-@suite class PolyfillAesCtrSpec {
+@suite class SoftAesCtrSpec {
   static vectors: AesCtrExample[];
 
   static async before() {
@@ -19,25 +16,9 @@ import WebCryptoAesCtr from "../src/providers/webcrypto/aes_ctr";
   }
 
   @test async "passes the AES-CTR test vectors"() {
-    for (let v of PolyfillAesCtrSpec.vectors) {
-      const ctrPolyfill = new PolyfillAesCtr(new PolyfillAes(v.key));
-      let ciphertext = await ctrPolyfill.encryptCtr(v.iv, v.plaintext);
-      expect(ciphertext).to.eql(v.ciphertext);
-    }
-  }
-}
-
-@suite class WebCryptoAesCtrSpec {
-  static vectors: AesCtrExample[];
-
-  static async before() {
-    this.vectors = await AesCtrExample.loadAll();
-  }
-
-  @test async "passes the AES-CTR test vectors"() {
-    for (let v of WebCryptoAesCtrSpec.vectors) {
-      const ctrNative = await WebCryptoAesCtr.importKey(new WebCrypto(), v.key);
-      let ciphertext = await ctrNative.encryptCtr(v.iv, v.plaintext);
+    for (let v of SoftAesCtrSpec.vectors) {
+      const ctrSoft = new SoftAesCtr(new SoftAes(v.key));
+      let ciphertext = await ctrSoft.encryptCtr(v.iv, v.plaintext);
       expect(ciphertext).to.eql(v.ciphertext);
     }
   }

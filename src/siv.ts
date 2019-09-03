@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2018 Dmitry Chestnykh, Tony Arcieri
+// Copyright (C) 2017-2019 Dmitry Chestnykh, Tony Arcieri
 // MIT License. See LICENSE file for details.
 
 import { equal } from "./internals/constant-time";

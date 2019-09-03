@@ -19,7 +19,7 @@ export class WebCryptoProvider implements ICryptoProvider {
       return await WebCryptoAesCtr.importKey(this.crypto, keyData);
     } catch (e) {
       if (e.message.includes("unsupported")) {
-        throw new NotImplementedError("WebCryptoProvider: AES-CTR unsupported. Use PolyfillCryptoProvider.");
+        throw new NotImplementedError("WebCryptoProvider: AES-CTR unsupported. Use SoftCryptoProvider.");
       } else {
         throw e;
       }

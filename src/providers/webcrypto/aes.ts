@@ -1,5 +1,7 @@
-// Copyright (C) 2017 Tony Arcieri
+// Copyright (C) 2017-2019 Tony Arcieri
 // MIT License. See LICENSE file for details.
+
+// TODO(tarcieri): migrate away from WebCrypto completely
 
 import { IBlockCipher } from "../../interfaces";
 import Block from "../../internals/block";
@@ -14,10 +16,6 @@ import Block from "../../internals/block";
  * In theory it should be constant time due to the use of WebCrypto (provided
  * the browser's implementation is constant time), but it could probably benefit
  * from some clever optimization work, or improvements to the WebCrypto API.
- *
- * Some WebCrypto implementations (e.g. node-webcrypto-ossl) support ECB mode
- * natively, so we could take advantage of that to potentially encrypt multiple
- * blocks in a single invocation.
  *
  * Key size: 16 or 32 bytes, block size: 16 bytes.
  */

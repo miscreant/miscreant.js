@@ -1,4 +1,4 @@
-// Copyright (C) 2016-2017 Tony Arcieri, Dmitry Chestnykh
+// Copyright (C) 2016-2019 Tony Arcieri, Dmitry Chestnykh
 // MIT License. See LICENSE file for details.
 
 import { IBlockCipher, ICryptoProvider, IMACLike } from "../interfaces";
@@ -12,10 +12,10 @@ import { xor } from "../internals/xor";
 const PRECOMPUTED_BLOCKS: number = 31;
 
 /**
- * Polyfill for the AES-PMAC message authentication code
+ * AES-PMAC message authentication code
  *
- * Uses a non-constant-time (lookup table-based) AES polyfill.
- * See polyfill/aes.ts for more information on the security impact.
+ * Uses a non-constant-time (lookup table-based) software AES implementation.
+ * See soft/aes.ts for more information on the security impact.
  */
 export class PMAC implements IMACLike {
   /** Create a new CMAC instance from the given key */
