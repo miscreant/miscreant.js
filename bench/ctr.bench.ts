@@ -3,8 +3,8 @@
 
 import { benchmark, report, byteSeq } from "./benchmark";
 
-import AES from "../src/internal/polyfill/aes";
-import CTR from "../src/internal/polyfill/aes_ctr";
+import AES from "../src/internal/soft/aes";
+import CTR from "../src/internal/soft/aes_ctr";
 
 const buf8192 = byteSeq(8192);
 const buf1111 = byteSeq(1111);

@@ -3,7 +3,7 @@
 
 import { benchmark, report, byteSeq } from "./benchmark";
 
-import AES from "../src/internal/polyfill/aes";
+import AES from "../src/internal/soft/aes";
 import SIV from "../src/internal/aes_siv";
 
 const buf8192 = byteSeq(8192);

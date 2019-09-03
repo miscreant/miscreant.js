@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Dmitry Chestnykh
+// Copyright (C) 2017-2019 Dmitry Chestnykh, Tony Arcieri
 // MIT License. See LICENSE file for details.
 
 import { suite, test } from "mocha-typescript";
@@ -6,7 +6,6 @@ import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import { AesSivExample } from "./support/test_vectors";
 
-import WebCrypto = require("node-webcrypto-ossl");
 import * as miscreant from "../src/index";
 
 let expect = chai.expect;
@@ -19,26 +18,11 @@ chai.use(chaiAsPromised);
     this.vectors = await AesSivExample.loadAll();
   }
 
-  @test async "should correctly seal and open with polyfill cipher implementations"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+  @test async "should correctly seal and open with software cipher implementations"() {
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of AesSivSpec.vectors) {
-      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", polyfillProvider);
-      const sealed = await siv.seal(v.plaintext, v.ad);
-      expect(sealed).to.eql(v.ciphertext);
-
-      const unsealed = await siv.open(sealed, v.ad);
-      expect(unsealed).not.to.be.null;
-      expect(unsealed!).to.eql(v.plaintext);
-      expect(() => siv.clear()).not.to.throw();
-    }
-  }
-
-  @test async "should correctly seal and open with WebCrypto cipher implementations"() {
-    const webCryptoProvider = new miscreant.WebCryptoProvider(new WebCrypto());
-
-    for (let v of AesSivSpec.vectors) {
-      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", webCryptoProvider);
+      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", softProvider);
       const sealed = await siv.seal(v.plaintext, v.ad);
       expect(sealed).to.eql(v.ciphertext);
 
@@ -50,7 +34,7 @@ chai.use(chaiAsPromised);
   }
 
   @test async "should correctly seal and open different plaintext under the same key"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     const key = byteSeq(64);
     const ad1 = [byteSeq(32), byteSeq(10)];
@@ -59,7 +43,7 @@ chai.use(chaiAsPromised);
     const ad2 = [byteSeq(32), byteSeq(10)];
     const pt2 = byteSeq(40, 100);
 
-    const siv = await miscreant.SIV.importKey(key, "AES-SIV", polyfillProvider);
+    const siv = await miscreant.SIV.importKey(key, "AES-SIV", softProvider);
 
     const sealed1 = await siv.seal(pt1, ad1);
     const opened1 = await siv.open(sealed1, ad1);
@@ -75,7 +59,7 @@ chai.use(chaiAsPromised);
   }
 
   @test async "should not open with incorrect key"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of AesSivSpec.vectors) {
       const badKey = v.key;
@@ -83,25 +67,25 @@ chai.use(chaiAsPromised);
       badKey[2] ^= badKey[2];
       badKey[3] ^= badKey[8];
 
-      const siv = await miscreant.SIV.importKey(badKey, "AES-SIV", polyfillProvider);
+      const siv = await miscreant.SIV.importKey(badKey, "AES-SIV", softProvider);
       await expect(siv.open(v.ciphertext, v.ad)).to.be.rejectedWith(miscreant.IntegrityError);
     }
   }
 
   @test async "should not open with incorrect associated data"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of AesSivSpec.vectors) {
       const badAd = v.ad;
       badAd.push(new Uint8Array(1));
 
-      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", polyfillProvider);
+      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", softProvider);
       await expect(siv.open(v.ciphertext, badAd)).to.be.rejectedWith(miscreant.IntegrityError);
     }
   }
 
   @test async "should not open with incorrect ciphertext"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of AesSivSpec.vectors) {
       const badOutput = v.ciphertext;
@@ -109,7 +93,7 @@ chai.use(chaiAsPromised);
       badOutput[1] ^= badOutput[1];
       badOutput[3] ^= badOutput[8];
 
-      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", polyfillProvider);
+      const siv = await miscreant.SIV.importKey(v.key, "AES-SIV", softProvider);
       await expect(siv.open(badOutput, v.ad)).to.be.rejectedWith(miscreant.IntegrityError);
     }
   }

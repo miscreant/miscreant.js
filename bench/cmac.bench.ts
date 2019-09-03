@@ -3,8 +3,8 @@
 
 import { benchmark, report, byteSeq } from "./benchmark";
 
-import AES from "../src/internal/polyfill/aes";
-import CMAC from "../src/internal/polyfill/aes_cmac";
+import AES from "../src/internal/soft/aes";
+import CMAC from "../src/internal/soft/aes_cmac";
 
 const buf8192 = byteSeq(8192);
 const buf1024 = byteSeq(1024);

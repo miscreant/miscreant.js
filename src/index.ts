@@ -15,5 +15,5 @@ export { CMAC } from "./mac/cmac";
 export { PMAC } from "./mac/pmac";
 
 /** Crypto providers */
-export { PolyfillCryptoProvider } from "./providers/polyfill";
+export { SoftCryptoProvider } from "./providers/soft";
 export { WebCryptoProvider } from "./providers/webcrypto";

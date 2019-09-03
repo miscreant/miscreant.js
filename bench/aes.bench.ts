@@ -3,7 +3,7 @@
 
 import { benchmark, report, byteSeq } from "./benchmark";
 
-import AES from "../src/internal/polyfill/aes";
+import AES from "../src/internal/soft/aes";
 
 const key = byteSeq(32);
 const cipher = new AES(key);

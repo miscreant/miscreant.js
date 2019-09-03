@@ -27,40 +27,9 @@ Have questions? Want to suggest a feature or change?
 
 Though this library is written by cryptographic professionals, it has not
 undergone a thorough security audit, and cryptographic professionals are still
-humans that make mistakes. Use this library at your own risk.
+humans that make mistakes.
 
-This library contains two implementations of the cryptographic primitives
-which underlie its implementation: ones based on the [Web Cryptography API],
-(a.k.a. Web Crypto) and a set of pure JavaScript polyfills.
-
-By default only the Web Crypto versions will be used, and an exception raised
-if Web Crypto is not available. Users of this library may opt into using the
-polyfills in environments where Web Crypto is unavailable, but see the security
-notes below and understand the potential risks before doing so.
-
-### Web Crypto Security Notes
-
-The Web Crypto API should provide access to high-quality implementations of
-the underlying cryptographic primitive functions used by this library in
-most modern browsers, implemented in optimized native code.
-
-On Node.js, you will need a native WebCrypto provider such as
-[node-webcrypto-ossl] to utilize native code implementations of the underlying
-ciphers instead of the polyfills. However, please see the security warning
-on this package before using it.
-
-[node-webcrypto-ossl]: https://github.com/PeculiarVentures/node-webcrypto-ossl
-
-### Polyfill Security Warning
-
-The AES polyfill implementation (off by default, see above) uses table lookups
-and is therefore not constant time. This means there's potential that
-co-tenant or even remote attackers may be able to measure minute timing
-variations and use them to recover AES keys.
-
-If at all possible, use the Web Crypto implementation instead of the polyfills.
-
-[Web Cryptography API]: https://www.w3.org/TR/WebCryptoAPI/
+**USE AT YOUR OWN RISK**
 
 ## Installation
 
@@ -123,14 +92,6 @@ miscreant.AEAD.importKey(keyData, algorithm[, provider = new miscreant.WebCrypto
 #### Return Value
 
 The **miscreant.AEAD.importKey()** method returns a [Promise] that, when fulfilled, returns an `AEAD` encryptor/decryptor.
-
-#### Exceptions
-
-The **miscreant.AEAD.importKey()** method will throw an error if it's attempting to use the default `window.crypto`
-provider either doesn't exist (e.g. `window` is not defined because we're on Node.js) or if that provider does not
-provide native implementations of the cryptographic primitives **AES-SIV** is built on top of.
-
-In these cases, you may choose to use `PolyfillCrypto`, but be aware this may decrease security.
 
 #### Example
 
@@ -271,14 +232,6 @@ miscreant.StreamEncryptor.importKey(keyData, nonceData, algorithm[, provider = n
 
 The **miscreant.StreamEncryptor.importKey()** method returns a [Promise] that, when fulfilled, returns a `StreamEncryptor` object.
 
-#### Exceptions
-
-The **miscreant.StreamEncryptor.importKey()** method will throw an error if it's attempting to use the default
-`window.crypto` provider either doesn't exist (e.g. `window` is not defined because we're on Node.js) or if that
-provider does not provide native implementations of the cryptographic primitives **AES-SIV** is built on top of.
-
-In these cases, you may choose to use `PolyfillCrypto`, but be aware this may decrease security.
-
 #### Example
 
 ```typescript
@@ -368,14 +321,6 @@ miscreant.StreamDecryptor.importKey(keyData, nonceData, algorithm[, provider = n
 #### Return Value
 
 The **miscreant.StreamDecryptor.importKey()** method returns a [Promise] that, when fulfilled, returns a `StreamDecryptor` object.
-
-#### Exceptions
-
-The **miscreant.StreamDecryptor.importKey()** method will throw an error if it's attempting to use the default
-`window.crypto` provider either doesn't exist (e.g. `window` is not defined because we're on Node.js) or if that
-provider does not provide native implementations of the cryptographic primitives **AES-SIV** is built on top of.
-
-In these cases, you may choose to use `PolyfillCrypto`, but be aware this may decrease security.
 
 #### Example
 
@@ -475,14 +420,6 @@ miscreant.SIV.importKey(keyData, algorithm[, provider = new miscreant.WebCryptoP
 #### Return Value
 
 The **miscreant.SIV.importKey()** method returns a [Promise] that, when fulfilled, returns a SIV encryptor/decryptor.
-
-#### Exceptions
-
-The **miscreant.SIV.importKey()** method will throw an error if it's attempting to use the default `window.crypto`
-provider either doesn't exist (e.g. `window` is not defined because we're on Node.js) or if that provider does not
-provide native implementations of the cryptographic primitives **AES-SIV** is built on top of.
-
-In these cases, you may choose to use `PolyfillCrypto`, but be aware this may decrease security.
 
 #### Example
 
@@ -598,7 +535,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/miscre
 
 Copyright (c) 2017-2019 [The Miscreant Developers][AUTHORS].
 
-AES polyfill implementation derived from the Go standard library:
+Software AES implementation derived from the Go standard library:
 Copyright (c) 2012 The Go Authors. All rights reserved.
 
 See [LICENSE.txt] for further details.
@@ -616,8 +553,7 @@ See [LICENSE.txt] for further details.
 
 [//]: # (general links)
 
-[AUTHORS]: https://github.com/miscreant/miscreant.js/blob/develop/AUTHORS.md
-[LICENSE.txt]: https://github.com/miscreant/miscreant.js/blob/develop/LICENSE.txt
+[Phil Rogaway]: https://en.wikipedia.org/wiki/Phillip_Rogaway
 [AES-SIV]: https://github.com/miscreant/meta/wiki/AES-SIV
 [RFC 5297]: https://tools.ietf.org/html/rfc5297
 [AES-PMAC-SIV]: https://github.com/miscreant/meta/wiki/AES-PMAC-SIV
@@ -633,3 +569,5 @@ See [LICENSE.txt] for further details.
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [Uint8Array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 [Crypto]: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
+[AUTHORS]: https://github.com/miscreant/miscreant.js/blob/develop/AUTHORS.md
+[LICENSE.txt]: https://github.com/miscreant/miscreant.js/blob/develop/LICENSE.txt

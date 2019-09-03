@@ -1,26 +1,26 @@
-// Copyright (C) 2016 Dmitry Chestnykh
+// Copyright (C) 2016-2019 Dmitry Chestnykh, Tony Arcieri
 // MIT License. See LICENSE file for details.
 
 import { ICTRLike } from "../../interfaces";
 import Block from "../../internals/block";
 
-import PolyfillAes from "./aes";
+import SoftAes from "./aes";
 
 /**
- * Polyfill for the AES-CTR (counter) mode of operation.
+ * AES-CTR (counter) mode of operation.
  *
- * Uses a non-constant-time (lookup table-based) AES polyfill.
- * See polyfill/aes.ts for more information on the security impact.
+ * Uses a non-constant-time (lookup table-based) software AES implementation.
+ * See soft/aes.ts for more information on the security impact.
  *
  * Note that CTR mode is malleable and generally should not be used without
  * authentication. Instead, use an authenticated encryption mode, like AES-SIV!
  */
-export default class PolyfillAesCtr implements ICTRLike {
+export default class SoftAesCtr implements ICTRLike {
   private _counter: Block;
   private _buffer: Block;
-  private _cipher: PolyfillAes;
+  private _cipher: SoftAes;
 
-  constructor(cipher: PolyfillAes) {
+  constructor(cipher: SoftAes) {
     // Set cipher.
     this._cipher = cipher;
 

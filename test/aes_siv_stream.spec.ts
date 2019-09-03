@@ -1,9 +1,11 @@
+// Copyright (C) 2017-2019 Tony Arcieri
+// MIT License. See LICENSE file for details.
+
 import { suite, test } from "mocha-typescript";
 import * as chai from "chai";
 import * as chaiAsPromised from "chai-as-promised";
 import { STREAMExample } from "./support/test_vectors";
 
-import WebCrypto = require("node-webcrypto-ossl");
 import * as miscreant from "../src/index";
 
 let expect = chai.expect;
@@ -16,35 +18,12 @@ chai.use(chaiAsPromised);
     this.vectors = await STREAMExample.loadAll();
   }
 
-  @test async "should correctly seal and open with polyfill cipher implementations"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+  @test async "should correctly seal and open with software cipher implementations"() {
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of STREAMSpec.vectors) {
-      const encryptor = await miscreant.StreamEncryptor.importKey(v.key, v.nonce, v.alg, polyfillProvider);
-      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, polyfillProvider);
-
-      for (var [i, b] of v.blocks.entries()) {
-        const lastBlock = (i + 1 >= v.blocks.length);
-
-        const sealed = await encryptor.seal(b.plaintext, lastBlock, b.ad);
-        expect(sealed).to.eql(b.ciphertext);
-
-        const unsealed = await decryptor.open(sealed, lastBlock, b.ad);
-        expect(unsealed).not.to.be.null;
-        expect(unsealed!).to.eql(b.plaintext);
-      }
-
-      expect(() => encryptor.clear()).not.to.throw();
-      expect(() => decryptor.clear()).not.to.throw();
-    }
-  }
-
-  @test async "should correctly seal and open with WebCrypto cipher implementations"() {
-    const webCryptoProvider = new miscreant.WebCryptoProvider(new WebCrypto());
-
-    for (let v of STREAMSpec.vectors) {
-      const encryptor = await miscreant.StreamEncryptor.importKey(v.key, v.nonce, v.alg, webCryptoProvider);
-      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, webCryptoProvider);
+      const encryptor = await miscreant.StreamEncryptor.importKey(v.key, v.nonce, v.alg, softProvider);
+      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, softProvider);
 
       for (var [i, b] of v.blocks.entries()) {
         const lastBlock = (i + 1 >= v.blocks.length);
@@ -63,7 +42,7 @@ chai.use(chaiAsPromised);
   }
 
   @test async "should not open with incorrect key"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of STREAMSpec.vectors) {
       const badKey = v.key;
@@ -71,7 +50,7 @@ chai.use(chaiAsPromised);
       badKey[2] ^= badKey[2];
       badKey[3] ^= badKey[8];
 
-      const decryptor = await miscreant.StreamDecryptor.importKey(badKey, v.nonce, v.alg, polyfillProvider);
+      const decryptor = await miscreant.StreamDecryptor.importKey(badKey, v.nonce, v.alg, softProvider);
 
       for (var [i, b] of v.blocks.entries()) {
         const lastBlock = (i + 1 >= v.blocks.length);
@@ -81,10 +60,10 @@ chai.use(chaiAsPromised);
   }
 
   @test async "should not open with incorrect associated data"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of STREAMSpec.vectors) {
-      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, polyfillProvider);
+      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, softProvider);
       const badAd = new Uint8Array(1);
 
       for (var [i, b] of v.blocks.entries()) {
@@ -95,10 +74,10 @@ chai.use(chaiAsPromised);
   }
 
   @test async "should not open with incorrect ciphertext"() {
-    const polyfillProvider = new miscreant.PolyfillCryptoProvider();
+    const softProvider = new miscreant.SoftCryptoProvider();
 
     for (let v of STREAMSpec.vectors) {
-      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, polyfillProvider);
+      const decryptor = await miscreant.StreamDecryptor.importKey(v.key, v.nonce, v.alg, softProvider);
 
       for (var [i, b] of v.blocks.entries()) {
         const lastBlock = (i + 1 >= v.blocks.length);

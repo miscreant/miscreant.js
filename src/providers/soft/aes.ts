@@ -1,15 +1,13 @@
-// Copyright (C) 2016-2017 Dmitry Chestnykh, Tony Arcieri
+// Copyright (C) 2016-2019 Dmitry Chestnykh, Tony Arcieri
 // MIT License. See LICENSE file for details.
 
-// Ported from Go implementation
+// Ported from Go implementation, which is based on public domain
+// implementation by Vincent Rijmen, Antoon Bosselaers, Paulo Barreto
+// (rijndael-alg-fst.c, 3.0, December 2000)
 //
 // Copyright 2009 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
-//
-// which is based on public domain implementation
-// by Vincent Rijmen, Antoon Bosselaers, Paulo Barreto
-// (rijndael-alg-fst.c, 3.0, December 2000)
 
 import { IBlockCipher } from "../../interfaces";
 import Block from "../../internals/block";
@@ -75,7 +73,7 @@ let Td2: Uint32Array;
 let Td3: Uint32Array;
 
 /**
- * Polyfill for the AES block cipher.
+ * AES block cipher.
  *
  * This implementation uses lookup tables, so it's susceptible to cache-timing
  * side-channel attacks. A constant-time version we tried was super slow (a few
@@ -83,7 +81,7 @@ let Td3: Uint32Array;
  *
  * Key size: 16 or 32 bytes, block size: 16 bytes.
  */
-export default class PolyfillAes implements IBlockCipher {
+export default class SoftAes implements IBlockCipher {
   // Expanded encryption key.
   private _encKey: Uint32Array;
 

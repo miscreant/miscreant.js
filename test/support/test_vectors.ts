@@ -3,7 +3,7 @@ import TJSON from "tjson-js";
 
 /** AES-SIV test vectors */
 export class AesSivExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_siv.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_siv.tjson";
 
   public readonly name: string;
   public readonly key: Uint8Array;
@@ -26,7 +26,7 @@ export class AesSivExample {
 
 /** AES-PMAC-SIV test vectors */
 export class AesPmacSivExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_pmac_siv.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_pmac_siv.tjson";
 
   public readonly name: string;
   public readonly key: Uint8Array;
@@ -49,7 +49,7 @@ export class AesPmacSivExample {
 
 /** AEAD (AES-SIV/AES-PMAC-SIV) test vectors */
 export class AEADExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_siv_aead.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_siv_aead.tjson";
 
   public readonly name: string;
   public readonly alg: string;
@@ -80,7 +80,7 @@ export class STREAMBlock {
 
 /** STREAM (AES-SIV/AES-PMAC-SIV) test vectors */
 export class STREAMExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_siv_stream.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_siv_stream.tjson";
 
   public readonly name: string;
   public readonly alg: string;
@@ -103,7 +103,7 @@ export class STREAMExample {
 
 /** AES (raw block function) test vectors */
 export class AesExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes.tjson";
 
   public readonly key: Uint8Array;
   public readonly src: Uint8Array;
@@ -124,7 +124,7 @@ export class AesExample {
 
 /** AES-CTR test vectors */
 export class AesCtrExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_ctr.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_ctr.tjson";
 
   public readonly key: Uint8Array;
   public readonly iv: Uint8Array;
@@ -146,7 +146,7 @@ export class AesCtrExample {
 
 /** AES-CMAC test vectors */
 export class AesCmacExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_cmac.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_cmac.tjson";
 
   public readonly key: Uint8Array;
   public readonly message: Uint8Array;
@@ -167,7 +167,7 @@ export class AesCmacExample {
 
 /** AES-PMAC test vectors */
 export class AesPmacExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/aes_pmac.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/aes_pmac.tjson";
 
   public readonly key: Uint8Array;
   public readonly message: Uint8Array;
@@ -188,7 +188,7 @@ export class AesPmacExample {
 
 /** dbl() test vectors */
 export class DblExample {
-  static readonly DEFAULT_EXAMPLES_PATH = "../vectors/dbl.tjson";
+  static readonly DEFAULT_EXAMPLES_PATH = "vectors/dbl.tjson";
 
   public readonly input: Uint8Array;
   public readonly output: Uint8Array;
