@@ -16,8 +16,6 @@ can see you've sent the same plaintext twice, as opposed to almost all other
 AES modes where it can facilitate [chosen ciphertext attacks] and/or
 full plaintext recovery.
 
-For more information, see the [toplevel README.md].
-
 ## Help and Discussion
 
 Have questions? Want to suggest a feature or change?
@@ -609,30 +607,30 @@ See [LICENSE.txt] for further details.
 
 [npm-shield]: https://img.shields.io/npm/v/miscreant.svg
 [npm-link]: https://www.npmjs.com/package/miscreant
-[build-image]: https://secure.travis-ci.org/miscreant/miscreant.svg?branch=develop
-[build-link]: https://travis-ci.org/miscreant/miscreant
+[build-image]: https://travis-ci.org/miscreant/miscreant.js.svg?branch=master
+[build-link]: https://travis-ci.org/miscreant/miscreant.js
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
-[license-link]: https://github.com/miscreant/miscreant/blob/develop/LICENSE.txt
+[license-link]: https://github.com/miscreant/miscreant.js/blob/develop/LICENSE.txt
 [gitter-image]: https://badges.gitter.im/badge.svg
 [gitter-link]: https://gitter.im/miscreant/Lobby
 
 [//]: # (general links)
 
-[AUTHORS]: https://github.com/miscreant/miscreant.js/blob/develop/AUTHORS.md
-[LICENSE.txt]: https://github.com/miscreant/miscreant/blob/develop/js/LICENSE.txt
-[AES-SIV]: https://github.com/miscreant/miscreant/wiki/AES-SIV
+[Phil Rogaway]: https://en.wikipedia.org/wiki/Phillip_Rogaway
+[AES-SIV]: https://github.com/miscreant/meta/wiki/AES-SIV
 [RFC 5297]: https://tools.ietf.org/html/rfc5297
-[AES-PMAC-SIV]: https://github.com/miscreant/miscreant/wiki/AES-PMAC-SIV
-[STREAM]: https://github.com/miscreant/miscreant/wiki/STREAM
-[nonce-reuse misuse-resistance]: https://github.com/miscreant/miscreant/wiki/Nonce-Reuse-Misuse-Resistance
+[AES-PMAC-SIV]: https://github.com/miscreant/meta/wiki/AES-PMAC-SIV
+[STREAM]: https://github.com/miscreant/meta/wiki/STREAM
+[nonce-reuse misuse-resistance]: https://github.com/miscreant/meta/wiki/Nonce-Reuse-Misuse-Resistance
 [AES-GCM]: https://en.wikipedia.org/wiki/Galois/Counter_Mode
 [chosen ciphertext attacks]: https://en.wikipedia.org/wiki/Chosen-ciphertext_attack
-[toplevel README.md]: https://github.com/miscreant/miscreant/blob/develop/README.md
 [Gitter]: https://gitter.im/miscreant/Lobby
 [Google Group]: https://groups.google.com/forum/#!forum/miscreant-crypto
 [miscreant-crypto+subscribe@googlegroups.com]: mailto:miscreant-crypto+subscribe@googlegroups.com?subject=subscribe
-[cc]: https://contributor-covenant.org
-[CODE_OF_CONDUCT.md]: https://github.com/miscreant/miscreant.js/blob/develop/CODE_OF_CONDUCT.md
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [Uint8Array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 [Crypto]: https://developer.mozilla.org/en-US/docs/Web/API/Crypto
+[AUTHORS]: https://github.com/miscreant/miscreant.js/blob/develop/AUTHORS.md
+[LICENSE.txt]: https://github.com/miscreant/miscreant.js/blob/develop/LICENSE.txt
+[cc]: https://contributor-covenant.org
+[CODE_OF_CONDUCT.md]: https://github.com/miscreant/miscreant.js/blob/develop/CODE_OF_CONDUCT.md
