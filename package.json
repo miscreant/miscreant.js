@@ -2,14 +2,14 @@
   "name": "miscreant",
   "version": "0.3.2",
   "description": "Misuse resistant symmetric encryption library providing AES-SIV (RFC 5297), AES-PMAC-SIV, and STREAM constructions",
-  "homepage": "https://github.com/miscreant/miscreant/tree/master/js/",
+  "homepage": "https://miscreant.io",
   "main": "release/index.js",
   "types": "src/index.ts",
   "author": "Tony Arcieri",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miscreant/miscreant.git"
+    "url": "git+https://github.com/miscreant/miscreant.js.git"
   },
   "keywords": [
     "cryptography",
@@ -18,7 +18,7 @@
     "security"
   ],
   "bugs": {
-    "url": "https://github.com/miscreant/miscreant/issues"
+    "url": "https://github.com/miscreant/miscreant.js/issues"
   },
   "directories": {
     "test": "test"
