@@ -544,7 +544,7 @@ See [LICENSE.txt] for further details.
 
 [npm-shield]: https://img.shields.io/npm/v/miscreant.svg
 [npm-link]: https://www.npmjs.com/package/miscreant
-[build-image]: https://travis-ci.org/miscreant/miscreant.js.svg?branch=master
+[build-image]: https://travis-ci.org/miscreant/miscreant.js.svg?branch=develop
 [build-link]: https://travis-ci.org/miscreant/miscreant.js
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-link]: https://github.com/miscreant/miscreant.js/blob/develop/LICENSE.txt
