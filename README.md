@@ -42,7 +42,7 @@ npm install miscreant
 Via [Yarn](https://yarnpkg.com/):
 
 ```bash
-yarn install miscreant
+yarn add miscreant
 ```
 
 Import Miscreant into your project with:
