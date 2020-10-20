@@ -15,7 +15,7 @@ export interface IBlockCipher {
 
   /** Encrypt 16-byte block in-place, replacing its contents with ciphertext. */
   encryptBlock(block: Block): Promise<this>;
-  
+
   /** Encrypt batched data with CBC for optimal CMAC calculation. */
   encryptBlockBatch(block: Block, data: Uint8Array): Promise<this>;
 }
