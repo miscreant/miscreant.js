@@ -64,15 +64,14 @@ export class CMAC implements IMACLike {
       this._bufferPos = 0;
     }
 
-    // TODO: use AES-CBC with a span of multiple blocks instead of encryptBlock
-    // to encrypt many blocks in a single call to the WebCrypto API
-    while (dataLength > Block.SIZE) {
-      for (let i = 0; i < Block.SIZE; i++) {
-        this._buffer.data[i] ^= data[dataPos + i];
-      }
-      dataLength -= Block.SIZE;
-      dataPos += Block.SIZE;
-      await this._cipher.encryptBlock(this._buffer);
+    if (dataLength > Block.SIZE) {
+      const batchSize = Math.floor((dataLength - 1) / Block.SIZE);
+      const fullBlockEndPos = dataPos + batchSize * Block.SIZE;
+      const fwdBlock = data.slice(dataPos, fullBlockEndPos);
+      dataLength -= batchSize * Block.SIZE;
+      dataPos = fullBlockEndPos;
+
+      await this._cipher.encryptBlockBatch(this._buffer, fwdBlock);
     }
 
     for (let i = 0; i < dataLength; i++) {

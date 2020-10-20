@@ -193,6 +193,22 @@ export default class SoftAes implements IBlockCipher {
 
     return this._emptyPromise;
   }
+
+  /**
+   * Encrypt batched data with CBC. This is made to be suitable for use in CMAC calculation.
+   * NOTE: This does not provide better performance compared to using encryptBlock(...) directly like before.
+   */
+  public async encryptBlockBatch(block: Block, data: Uint8Array): Promise<this> {
+    let dataPos = 0;
+    while (dataPos < data.length) {
+      for (let i = 0; i < Block.SIZE; i++) {
+        block.data[i] ^= data[dataPos + i];
+      }
+      dataPos += Block.SIZE;
+      await this.encryptBlock(block);
+    }
+    return this._emptyPromise;
+  }
 }
 
 // Initialize generates encryption and decryption tables.
