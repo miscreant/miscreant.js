@@ -21,7 +21,7 @@ export default class WebCryptoAesCtr implements ICTRLike {
 
   public async encryptCtr(iv: Uint8Array, plaintext: Uint8Array): Promise<Uint8Array> {
     const ciphertext = await this.crypto.subtle.encrypt(
-      { name: "AES-CTR", counter: iv, length: 16 },
+      { name: "AES-CTR", counter: iv, length: 128 },
       this.key,
       plaintext,
     );
