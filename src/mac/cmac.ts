@@ -82,7 +82,7 @@ export class CMAC implements IMACLike {
       const subkey = (padding > 0) ? this._subkey2 : this._subkey1;
 
       // XOR in the subkey.
-      for (let i = 0 ; i < Block.SIZE ; ++i ) {
+      for (let i = 0; i < Block.SIZE; ++i) {
         allData[totalLength - Block.SIZE + i] ^= subkey.data[i];
       }
 
