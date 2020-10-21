@@ -72,4 +72,19 @@ export default class WebCryptoAes implements IBlockCipher {
     block.data.set(new Uint8Array(ctBlock, 0, Block.SIZE));
     return this._emptyPromise;
   }
+
+  /**
+   * Encrypt data with CBC in a batch.
+   * This is made to be suitable and as optimal as possible for use in CMAC calculation.
+   *
+   * @param {Block} block - block to use as iv, final block of ciphertext will replace its contents
+   * @param {Uint8Array} data - data to encrypt
+   * @returns {Promise<this>}
+   */
+  public async encryptBlockBatch(block: Block, data: Uint8Array): Promise<this> {
+    const params = { name: "AES-CBC", iv: block.data };
+    const ctBlock = await this._crypto.subtle.encrypt(params, this._key, data);
+    block.data.set(new Uint8Array(ctBlock, data.length - Block.SIZE, Block.SIZE));
+    return this._emptyPromise;
+  }
 }

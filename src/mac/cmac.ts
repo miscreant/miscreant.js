@@ -3,7 +3,6 @@
 
 import { IBlockCipher, ICryptoProvider, IMACLike } from "../interfaces";
 import Block from "../internals/block";
-import { xor } from "../internals/xor";
 
 /**
  * The AES-CMAC message authentication code
@@ -27,6 +26,7 @@ export class CMAC implements IMACLike {
   private _buffer: Block;
   private _bufferPos = 0;
   private _finished = false;
+  private _data_accum = new Array();
 
   constructor(
     private _cipher: IBlockCipher,
@@ -40,6 +40,7 @@ export class CMAC implements IMACLike {
     this._buffer.clear();
     this._bufferPos = 0;
     this._finished = false;
+    this._data_accum = new Array();
     return this;
   }
 
@@ -50,55 +51,51 @@ export class CMAC implements IMACLike {
   }
 
   public async update(data: Uint8Array): Promise<this> {
-    const left = Block.SIZE - this._bufferPos;
-    let dataPos = 0;
-    let dataLength = data.length;
-
-    if (dataLength > left) {
-      for (let i = 0; i < left; i++) {
-        this._buffer.data[this._bufferPos + i] ^= data[i];
-      }
-      dataLength -= left;
-      dataPos += left;
-      await this._cipher.encryptBlock(this._buffer);
-      this._bufferPos = 0;
-    }
-
-    // TODO: use AES-CBC with a span of multiple blocks instead of encryptBlock
-    // to encrypt many blocks in a single call to the WebCrypto API
-    while (dataLength > Block.SIZE) {
-      for (let i = 0; i < Block.SIZE; i++) {
-        this._buffer.data[i] ^= data[dataPos + i];
-      }
-      dataLength -= Block.SIZE;
-      dataPos += Block.SIZE;
-      await this._cipher.encryptBlock(this._buffer);
-    }
-
-    for (let i = 0; i < dataLength; i++) {
-      this._buffer.data[this._bufferPos++] ^= data[dataPos + i];
-    }
-
+    this._data_accum.push(data);
     return this;
   }
 
   public async finish(): Promise<Uint8Array> {
     if (!this._finished) {
-      // Select which subkey to use.
-      const subkey = (this._bufferPos < Block.SIZE) ? this._subkey2 : this._subkey1;
-
-      // XOR in the subkey.
-      xor(this._buffer.data, subkey.data);
-
-      // Pad if needed.
-      if (this._bufferPos < Block.SIZE) {
-        this._buffer.data[this._bufferPos] ^= 0x80;
+      // calculate total length and padding
+      let totalLength = this._data_accum.reduce((acc, value) => acc + value.length, 0);
+      let padding;
+      if (totalLength === 0) {
+        totalLength = padding = Block.SIZE;
+      } else {
+        padding = totalLength % Block.SIZE;
+        if (padding > 0) {
+          padding = Block.SIZE - padding;
+          totalLength += padding;
+        }
       }
 
-      // Encrypt buffer to get the final digest.
-      await this._cipher.encryptBlock(this._buffer);
+      // construct single buffer with all data
+      const allData = new Uint8Array(totalLength);
+      let bufPos = 0;
+      for (const data of this._data_accum) {
+        allData.set(data, bufPos);
+        bufPos += data.length;
+      }
 
-      // Set finished flag.
+      // Select which subkey to use.
+      const subkey = (padding > 0) ? this._subkey2 : this._subkey1;
+
+      // XOR in the subkey.
+      for (let i = 0; i < Block.SIZE; ++i) {
+        allData[totalLength - Block.SIZE + i] ^= subkey.data[i];
+      }
+
+      // Pad if needed.
+      if (padding > 0) {
+        allData[totalLength - padding] ^= 0x80;
+      }
+
+      // Encrypt the full buffer to get the final digest.
+      await this._cipher.encryptBlockBatch(this._buffer, allData);
+
+      // Free the accumulation buffer and set finished flag.
+      this._data_accum = new Array();
       this._finished = true;
     }
 
